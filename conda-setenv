@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+
+function __set_conda_env(){
+  if ! command -v conda &> /dev/null; then return 1; fi
+  local dir=$PWD
+  local conda_env=$CONDA_DEFAULT_ENV
+  while [[ $dir != "/" ]]; do
+    if [[ -f "$dir/.conda-environment" ]]
+    then
+      local filename="$dir/.conda-environment"
+      read -r conda_env<$filename
+      if [ "$conda_env" != "$CONDA_DEFAULT_ENV" ]
+      then
+        conda activate $conda_env
+      fi
+      return 0
+    else
+      dir=$(dirname "$dir")
+    fi
+  done
+
+  if [ "$CONDA_DEFAULT_ENV" != "" ]
+  then
+    conda deactivate
+    conda deactivate
+  fi
+  return 1
+}
+
+function mkconda(){
+  if [[ "$CONDA_DEFAULT_ENV" != "" ]]
+  then
+    if [[ -f ".conda-environment" ]]
+    then
+      echo ".conda-environment already exists in this folder"
+    else
+      echo $CONDA_DEFAULT_ENV > .conda-environment
+    fi
+  else
+    echo "no conda environment is active"
+  fi
+}
+
+if [ -n ${CONDA_SETENV_BUILT_IN_CD+x} ]
+then
+  if [[ $(type -t cd) == function ]]
+  then
+    # Somebody else already hooked the builtin cd. RVM???
+    CONDA_SETENV_BUILT_IN_CD=NO
+    eval conda_setenv_"$(declare -f cd)"
+   else
+    CONDA_SETENV_BUILT_IN_CD=YES
+  fi
+
+  function cd(){
+    if [ "$CONDA_SETENV_BUILT_IN_CD" == "YES" ]
+    then
+      builtin cd $@
+    else
+      conda_setenv_cd $@
+    fi
+    __set_conda_env
+  }
+
+  cd .
+fi
