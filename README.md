@@ -9,6 +9,11 @@ name of the environment.
 So even if you enter a subdirectory of your project, the conda
 environment will be set properly.
 
+Outside your projects, where no `.conda-environment` can be found, the
+conda environment will be deactivated completely. So not even the base
+environment will be available. This way, the Python-interpreter of
+your system will be available.
+
 ## Getting Started
 
 ### Installation
@@ -32,12 +37,13 @@ create a file `.conda-environment` containing the name of the
 environment with `mkconda`:
 
 ```sh
+$ cd /path/to/cool_project
 $ conda activate cool_project
 $ mkconda
 ```
 
-stores the current environment in a file named .conda-environment in
-the current directory.
+`mkconda` stores the current environment in a file named
+`.conda-environment` in the current directory.
 
 ## License
 
