@@ -22,9 +22,10 @@ Copy `conda-setenv` somewhere onto your computer.
 
 ### Initialization
 
-Add this to your .bashrc-file. If you use [RVM](https://rvm.io), add
-it after the initialization of RVM, otherwise the cd-hook of RVM will
-not work anymore.
+Add this to your .bashrc-file after the initialisation code of
+Miniconda. If you use [RVM](https://rvm.io), add it after the
+initialization of RVM, otherwise the cd-hook of RVM will not work
+anymore.
 
 ```sh
 source /path/to/conda-setenv
