@@ -43,7 +43,7 @@ $ conda activate cool_project
 $ mkconda
 ```
 
-`mkconda` stores the current environment in a file named
+`mkconda` stores the name of the current environment in a file named
 `.conda-environment` in the current directory.
 
 ## License
